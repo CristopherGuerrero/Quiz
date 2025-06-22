@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Interactivo</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f5f7fa;
+            margin: 0;
+            padding: 2rem;
+        }
+        .quiz-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #2c3e50;
+            text-align: center;
+        }
+        .question-container {
+            margin: 2rem 0;
+        }
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        .options-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+        .option {
+            padding: 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .option:hover {
+            background-color: #f0f0f0;
+        }
+        .option.selected {
+            background-color: #3498db;
+            color: white;
+            border-color: #3498db;
+        }
+        .progress {
+            margin: 1rem 0;
+            color: #7f8c8d;
+            text-align: center;
+        }
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 2rem;
+        }
+        button {
+            padding: 0.75rem 1.5rem;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+        button:disabled {
+            background-color: #bdc3c7;
+            cursor: not-allowed;
+        }
+        button.secondary {
+            background-color: #95a5a6;
+        }
+        .results-container {
+            margin-top: 2rem;
+            padding: 1.5rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+        }
+        .stats-container {
+            margin-top: 1.5rem;
+            padding: 1rem;
+            background-color: #e8f4fc;
+            border-radius: 8px;
+        }
+        .timer {
+            text-align: center;
+            font-size: 1.1rem;
+            margin: 1rem 0;
+            color: #3498db;
+        }
+        .nav-links {
+            margin-top: 2rem;
+            text-align: center;
+        }
+        .nav-links a {
+            color: #3498db;
+            text-decoration: none;
+            margin: 0 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container">
+        <h1>Quiz Interactivo</h1>
+        
+        <div class="timer" id="timer">Tiempo: 00:00</div>
+        
+        <div class="question-container" id="question-container">
+            <div class="question-text" id="question-text"></div>
+            <div class="options-container" id="options-container"></div>
+        </div>
+        
+        <div class="progress" id="progress"></div>
+        
+        <div class="controls">
+            <button id="prev-btn" disabled>Anterior</button>
+            <button id="next-btn">Siguiente</button>
+            <button id="submit-btn" style="display: none;">Enviar Quiz</button>
+        </div>
+        
+        <div class="results-container" id="results-container">
+            <h2>Resultados del Quiz</h2>
+            <div id="results-text"></div>
+            <div class="stats-container" id="stats-container"></div>
+        </div>
+        
+        <div class="nav-links">
+            <a href="index.html">Volver al inicio</a>
+            <a href="flashcards.html">Ir a Flashcards</a>
+        </div>
+    </div>
+
+    <script src="js/quiz.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', async function() {
+            // Verificar si el usuario está logueado
+            const user = JSON.parse(localStorage.getItem('currentUser') || { id: 0 });
+            
+            // Inicializar el quiz
+            await initQuiz(user.id);
+            
+            // Configurar event listeners
+            document.getElementById('prev-btn').addEventListener('click', prevQuestion);
+            document.getElementById('next-btn').addEventListener('click', nextQuestion);
+            document.getElementById('submit-btn').addEventListener('click', finishQuiz);
+        });
+    </script>
+</body>
+</html>
